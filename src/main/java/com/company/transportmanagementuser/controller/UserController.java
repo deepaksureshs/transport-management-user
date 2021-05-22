@@ -43,16 +43,16 @@ public class UserController {
 			request = objectMapper.readValue(payload, Request.class);
 			responsePayload = objectMapper.writeValueAsString(userService.getVehicleList(request));
 		} catch (JsonMappingException exception) {
-			errorResponse.put("error-message", "payload mapping error occured" + exception);
+			errorResponse.put("message", "" + exception);
 			LOGGER.error("payload mapping exception occured" + exception);
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 
 		} catch (JsonProcessingException exception) {
-			errorResponse.put("error-message", "payload processing error occured" + exception);
+			errorResponse.put("message", "" + exception);
 			LOGGER.error("payload processing error occured" + exception);
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 		} catch (Exception exception) {
-			errorResponse.put("error-message", exception.getMessage());
+			errorResponse.put("message", exception.getMessage());
 			LOGGER.error(exception.getMessage());
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 		}
@@ -63,7 +63,7 @@ public class UserController {
 
 	@GetMapping("/route/seat")
 	public ResponseEntity checkSeat(@RequestBody String payload) {
-		LOGGER.info("Vehicles request received. payload :: " + payload);
+		LOGGER.info("Request received to check available seats payload :: " + payload);
 		Request request = new Request();
 		boolean responsePayload = false;
 		Map<String, String> errorResponse = new HashMap<String, String>();
@@ -72,15 +72,15 @@ public class UserController {
 			request = objectMapper.readValue(payload, Request.class);
 			responsePayload = userService.checkSeat(request);
 		} catch (JsonMappingException exception) {
-			errorResponse.put("error-message", "payload mapping error occured" + exception);
+			errorResponse.put("message", "" + exception);
 			LOGGER.error("payload mapping exception occured" + exception);
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 		} catch (JsonProcessingException exception) {
-			errorResponse.put("error-message", "payload processing error occured" + exception);
+			errorResponse.put("message", "" + exception);
 			LOGGER.error("payload processing error occured" + exception);
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 		} catch (Exception exception) {
-			errorResponse.put("error-message", exception.getMessage());
+			errorResponse.put("message", exception.getMessage());
 			LOGGER.error(exception.getMessage());
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 		}

@@ -29,15 +29,15 @@ public class UserService {
 		try {
 			date = format.parse(request.getRouteDate());
 			vehicles = userServiceRepository.getVehicleListByRoute(request.getRoute().getRouteId(), date);
-
+			LOGGER.info("Vehicles List obtained for route : " + request.getRoute().getRouteId() + " are" + vehicles);
 		} catch (ParseException e) {
-			LOGGER.error("Exception Invalid route-date recived " + e);
-			throw new Exception("Invalid route-date recived");
+			LOGGER.error("ParseException :: Invalid route-date recived " + e);
+			throw new Exception("Exception :: Invalid route-date recived");
 		} catch (NullPointerException e) {
-			LOGGER.error("Exception route id or route_date is missing ");
-			throw new Exception("Exception route id or route_date is missing ");
+			LOGGER.error("NullPointerException :: route id or route_date is missing ");
+			throw new Exception("Exception : route id or route_date is missing ");
 		} catch (Exception e) {
-			LOGGER.error("Exception " + e);
+			LOGGER.error("Exception :: " + e);
 			throw new Exception(e);
 		}
 		return vehicles;
@@ -50,7 +50,7 @@ public class UserService {
 			date = format.parse(request.getRouteDate());
 			availableSeat = userServiceRepository.checkSeat(request.getRoute().getRouteId(),
 					request.getVehicle().getVehicleId(), date);
-
+			LOGGER.info("available seats : " + availableSeat);
 		} catch (ParseException e) {
 			LOGGER.error("Exception Invalid route-date recived " + e);
 			throw new Exception("Invalid route-date recived");

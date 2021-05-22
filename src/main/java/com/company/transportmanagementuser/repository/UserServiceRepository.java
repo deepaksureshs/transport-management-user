@@ -34,7 +34,7 @@ public class UserServiceRepository {
 
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		paramSource.addValue("route_id", routeId, Types.INTEGER).addValue("route_date", date, Types.DATE);
-
+		LOGGER.info("select vehicle paramSource " + paramSource);
 		List<Vehicle> vehicleList = jdbcTemplate.query(selectVehicleQuery, paramSource, new VehicleListExtractor());
 		LOGGER.info("Vehicle List recieved : " + vehicleList);
 		return vehicleList;
@@ -45,18 +45,17 @@ public class UserServiceRepository {
 				+ date);
 		String selectSeatAvailableQuery = "SELECT  seat_available FROM VEHICLE_ROUTE_MAP \r\n"
 				+ "WHERE route_date = :route_date AND route_id=:route_id AND vehicle_id=:vehicle_id";
-
 		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 		paramSource.addValue("route_id", routeId, Types.INTEGER).addValue("route_date", date, Types.DATE)
 				.addValue("vehicle_id", vehicleId, Types.INTEGER);
 		int availableSeats = 0;
 		try {
 			availableSeats = jdbcTemplate.queryForObject(selectSeatAvailableQuery, paramSource, Integer.class);
+			LOGGER.info("select seat availablity paramSource " + paramSource);
 		} catch (DataAccessException e) {
-			LOGGER.error("Exception no result found for submitted route-date,vehicle and route " + e);
-			throw new Exception("Exception no result found for submitted route-date,vehicle and route " + e);
+			LOGGER.error("Exception :: no result found for submitted route-date,vehicle and route " + e);
+			throw new Exception("Exception :: no result found for submitted route-date,vehicle and route " + e);
 		}
-		LOGGER.info("available seats : " + availableSeats);
 		return availableSeats;
 
 	}
