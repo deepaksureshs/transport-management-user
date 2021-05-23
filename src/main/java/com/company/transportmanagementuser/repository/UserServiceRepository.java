@@ -28,7 +28,7 @@ public class UserServiceRepository {
 
 	public List<Vehicle> getVehicleListByRoute(int routeId, Date date) {
 		LOGGER.info("fetch vehicles for route id : " + routeId + " and route date : " + date);
-		String selectVehicleQuery = "SELECT   v.vehicle_id,v.vehicle_name,v.registration_number,v.vehicle_type,v.capacity,v.health_status\r\n"
+		String selectVehicleQuery = "SELECT   v.vehicle_id,v.vehicle_name,v.registration_number,v.vehicle_type,v.capacity,v.health_status,v.created_date,v.updated_date\r\n"
 				+ "FROM VEHICLE_ROUTE_MAP vrm  INNER JOIN VEHICLE v  on vrm.vehicle_id=v.vehicle_id\r\n"
 				+ "where vrm.route_date = :route_date AND vrm.route_id=:route_id";
 
@@ -50,11 +50,13 @@ public class UserServiceRepository {
 				.addValue("vehicle_id", vehicleId, Types.INTEGER);
 		int availableSeats = 0;
 		try {
-			availableSeats = jdbcTemplate.queryForObject(selectSeatAvailableQuery, paramSource, Integer.class);
 			LOGGER.info("select seat availablity paramSource " + paramSource);
-		} catch (DataAccessException e) {
-			LOGGER.error("Exception :: no result found for submitted route-date,vehicle and route " + e);
-			throw new Exception("Exception :: no result found for submitted route-date,vehicle and route " + e);
+			availableSeats = jdbcTemplate.queryForObject(selectSeatAvailableQuery, paramSource, Integer.class);
+		} catch (DataAccessException accessException) {
+			LOGGER.error("Exception ::  vehicle :" + vehicleId + " not found on route : " + routeId + " at " + date
+					+ " :: " + accessException);
+			throw new Exception(
+					"Exception ::  vehicle :" + vehicleId + " not found on route : " + routeId + " at " + date);
 		}
 		return availableSeats;
 

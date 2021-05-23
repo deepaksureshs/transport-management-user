@@ -43,12 +43,12 @@ public class UserController {
 			request = objectMapper.readValue(payload, Request.class);
 			responsePayload = objectMapper.writeValueAsString(userService.getVehicleList(request));
 		} catch (JsonMappingException exception) {
-			errorResponse.put("message", "" + exception);
+			errorResponse.put("message", exception.getMessage());
 			LOGGER.error("payload mapping exception occured" + exception);
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 
 		} catch (JsonProcessingException exception) {
-			errorResponse.put("message", "" + exception);
+			errorResponse.put("message", exception.getMessage());
 			LOGGER.error("payload processing error occured" + exception);
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 		} catch (Exception exception) {
@@ -72,11 +72,11 @@ public class UserController {
 			request = objectMapper.readValue(payload, Request.class);
 			responsePayload = userService.checkSeat(request);
 		} catch (JsonMappingException exception) {
-			errorResponse.put("message", "" + exception);
+			errorResponse.put("message", exception.getMessage());
 			LOGGER.error("payload mapping exception occured" + exception);
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 		} catch (JsonProcessingException exception) {
-			errorResponse.put("message", "" + exception);
+			errorResponse.put("message", exception.getMessage());
 			LOGGER.error("payload processing error occured" + exception);
 			return ResponseEntity.status(500).contentType(MediaType.APPLICATION_JSON).body(errorResponse);
 		} catch (Exception exception) {
